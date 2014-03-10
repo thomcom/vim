@@ -33,8 +33,16 @@ set incsearch		" do incremental searching
 
 " mine
 set expandtab		" use soft tabs
-set tabstop=3
-set sw=3
+set tabstop=4
+set sw=4
+set background=dark
+
+" ctags optimization
+set autochdir
+set tags=tags;
+
+" large file disable syntax highlighting
+autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
 
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
