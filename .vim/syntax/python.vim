@@ -83,6 +83,8 @@ syn match  pythonEscape		"\\x\x\{2}" contained
 syn match  pythonEscape		"\(\\u\x\{4}\|\\U\x\{8}\)" contained
 syn match  pythonEscape		"\\$"
 
+let python_highlight_all = 1
+
 if exists("python_highlight_all")
   let python_highlight_numbers = 1
   let python_highlight_builtins = 1

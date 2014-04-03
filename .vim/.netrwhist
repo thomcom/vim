@@ -1,8 +1,10 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_cnt =8
 let g:netrw_dirhist_1='/Users/thomcom/Dropbox/CP/Yonder/git/yonder-server/web-server/test'
 let g:netrw_dirhist_2='/Users/thomcom/Dropbox/CP/Yonder/git/yonder-server/web-server/db/music-db/designs/music-db/views/artists_by_rank'
 let g:netrw_dirhist_3='/Users/thomcom/Dropbox/CP/Yonder/git/yonder-server/web-server/db/music-db/designs/music-db/diacritic'
 let g:netrw_dirhist_4='/Users/thomcom/Dropbox/CP/Yonder/git/yonder-server/web-server/db/music-db/designs/music-db/indexes/artists'
 let g:netrw_dirhist_5='/Users/thomcom/Dropbox/CP/Yonder/git/yonder-server/web-server/db/music-db/designs/music-db/indexes/albums'
 let g:netrw_dirhist_6='/Users/thomcom/Dropbox/CP/Yonder/git/yonder-server/web-server/db/music-db/designs/music-db/indexes/tracks'
+let g:netrw_dirhist_7='/Users/thomcom/Dropbox/CP/Yonder/git/yonder-server/web-server/test'
+let g:netrw_dirhist_8='/Users/thomcom/Dropbox/CP/Yonder/git/yonder-server/web-server'
