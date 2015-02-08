@@ -33,9 +33,15 @@ set incsearch		" do incremental searching
 
 " mine
 set expandtab		" use soft tabs
-set tabstop=4
-set sw=4
+set tabstop=2
+set sw=2
 set background=dark
+set smartindent
+let &titlestring = @%
+set title
+
+" inserting newlines into TMM files, stop it
+set fileformats+=dos
 
 " ctags optimization
 set autochdir
@@ -61,6 +67,10 @@ if &t_Co > 2 || has("gui_running")
   set hlsearch
 endif
 
+" put temp files somewhere less messy
+set backupdir=~/.vim/tmp,.
+
+" glsl syntax highlighting
 au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl setf glsl 
 autocmd FileType c,cpp source ~/.vim/syntax/opengl.vim
 

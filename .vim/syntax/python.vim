@@ -49,14 +49,14 @@ syn keyword pythonStatement	lambda yield
 
 syn match   pythonDefStatement	/^\s*\%(def\|class\)/
   \ nextgroup=pythonFunction skipwhite
-syn region  pythonFunctionFold	start="^\z(\s*\)\%(def\|class\)\>"
-  \ end="\ze\%(\s*\n\)\+\%(\z1\s\)\@!." fold transparent
+"syn region  pythonFunctionFold	start="^\z(\s*\)\%(def\|class\)\>"
+"  \ end="\ze\%(\s*\n\)\+\%(\z1\s\)\@!." fold transparent
 syn match   pythonFunction	"[a-zA-Z_][a-zA-Z0-9_]*" contained
 
 syn match   pythonComment /#\%(.\%({{{\|}}}\)\@!\)*$/
   \ contains=pythonTodo,@Spell
-syn region  pythonFold matchgroup=pythonComment
-  \ start='#.*{{{.*$' end='#.*}}}.*$' fold transparent
+"syn region  pythonFold matchgroup=pythonComment
+"  \ start='#.*{{{.*$' end='#.*}}}.*$' fold transparent
 
 syn keyword pythonRepeat	for while
 syn keyword pythonConditional	if elif else
@@ -137,6 +137,8 @@ if exists("python_highlight_exceptions")
 endif
 
 if exists("python_highlight_space_errors")
+  " empty line whitespace
+  syn match   pythonSpaceError   display excludenl "\s\+$"
   " trailing whitespace
   syn match   pythonSpaceError   display excludenl "\S\s\+$"ms=s+1
   " mixed tabs and spaces
