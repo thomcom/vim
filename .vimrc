@@ -1,14 +1,3 @@
-" An example for a vimrc file.
-"
-" Maintainer:	Bram Moolenaar <Bram@vim.org>
-" Last change:	2002 Sep 19
-"
-" To use it, copy it to
-"     for Unix and OS/2:  ~/.vimrc
-"	      for Amiga:  s:.vimrc
-"  for MS-DOS and Win32:  $VIM\_vimrc
-"	    for OpenVMS:  sys$login:.vimrc
-
 " When started as "evim", evim.vim will already have done these settings.
 if v:progname =~? "evim"
   finish
@@ -40,7 +29,7 @@ set smartindent
 let &titlestring = @%
 set title
 
-" inserting newlines into TMM files, stop it
+" inserting newlines into files, stop it
 set fileformats+=dos
 
 " ctags optimization
@@ -49,6 +38,9 @@ set tags=tags;
 
 " large file disable syntax highlighting
 autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
+
+" json format!
+" key-\ $!python -m json.tool
 
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
@@ -73,6 +65,9 @@ set backupdir=~/.vim/tmp,.
 " glsl syntax highlighting
 au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl setf glsl 
 autocmd FileType c,cpp source ~/.vim/syntax/opengl.vim
+
+" better paren highlighting
+hi MatchParen cterm=none ctermbg=green ctermfg=yellow
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
