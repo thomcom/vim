@@ -1,3 +1,34 @@
+" https://github.org/junegunn/vim-plug
+
+call plug#begin()
+
+Plug 'tmhedberg/SimpylFold'
+Plug 'Konfekt/FastFold'
+Plug 'nvie/vim-flake8'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'Rip-Rip/clang_complete'
+
+call plug#end()
+
+
+" c++ autocomplete
+let g:clang_library_path="$CONDA_PREFIX/lib"
+
+" folding?
+set foldmethod=expr
+nnoremap <space> za
+vnoremap <space> zf
+
+" Clipboard for Ubuntu
+set clipboard=unnamed
+
+" flake8
+autocmd BufWritePost *.py call Flake8()
+
+" tmux
+autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
+
 " When started as "evim", evim.vim will already have done these settings.
 if v:progname =~? "evim"
   finish
@@ -38,7 +69,8 @@ set expandtab		" use soft tabs
 set tabstop=2
 set sw=2
 set background=dark
-set smartindent
+" set smartindent " not using this anymore?
+filetype indent on
 let &titlestring = @%
 set title
 
@@ -46,7 +78,7 @@ set title
 set fileformats+=dos
 
 " ctags optimization
-set autochdir
+" autocmd BufRead,BufEnter * silent! lcd %:p:h:gs/ /\\ /
 set tags=tags;
 
 " large file disable syntax highlighting
@@ -73,11 +105,14 @@ if &t_Co > 2 || has("gui_running")
 endif
 
 " put temp files somewhere less messy
-set backupdir=~/.vim/tmp,.
+set backupdir=~/.vim/backups,.
 
 " glsl syntax highlighting
-au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl setf glsl 
-autocmd FileType c,cpp source ~/.vim/syntax/opengl.vim
+au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl,*.cuh,*.cu setf glsl 
+autocmd FileType c,cpp,cu,cuh source ~/.vim/syntax/opengl.vim
+
+" cython syntax highlighting
+autocmd BufNewFile,BufRead *.pyx set syntax=python
 
 " better paren highlighting
 hi MatchParen cterm=none ctermbg=green ctermfg=yellow
@@ -205,4 +240,3 @@ endfunction
 " Set up maps for n and N that blink the match
 execute printf("nnoremap <silent> n n:call HLNext(%d, %d)<cr>", s:blink_length, has("timers") ? s:blink_freq : s:blink_length)
 execute printf("nnoremap <silent> N N:call HLNext(%d, %d)<cr>", s:blink_length, has("timers") ? s:blink_freq : s:blink_length)
-
