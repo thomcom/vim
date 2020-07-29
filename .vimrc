@@ -7,13 +7,16 @@ Plug 'Konfekt/FastFold'
 Plug 'nvie/vim-flake8'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
-Plug 'Rip-Rip/clang_complete'
+Plug 'ycm-core/YouCompleteMe', { 'do' : './install.py --clangd-completer' }
+"Plug 'Rip-Rip/clang_complete'
+"Plug 'vim-syntastic/syntastic'
 
 call plug#end()
 
-
+" Config for Rip-Rip/clang_complete
+" Going to try YCM instead
 " c++ autocomplete
-let g:clang_library_path="$CONDA_PREFIX/lib"
+"let g:clang_library_path="/usr/lib/llvm-6.0/lib"
 
 " folding?
 set foldmethod=expr
