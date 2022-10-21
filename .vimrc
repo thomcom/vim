@@ -8,15 +8,11 @@ Plug 'nvie/vim-flake8'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'ycm-core/YouCompleteMe', { 'do' : './install.py --clangd-completer' }
+Plug 'Integralist/vim-mypy'
 "Plug 'Rip-Rip/clang_complete'
 "Plug 'vim-syntastic/syntastic'
 
 call plug#end()
-
-" Config for Rip-Rip/clang_complete
-" Going to try YCM instead
-" c++ autocomplete
-"let g:clang_library_path="/usr/lib/llvm-6.0/lib"
 
 " folding?
 set foldmethod=expr
@@ -24,10 +20,13 @@ nnoremap <space> za
 vnoremap <space> zf
 
 " Clipboard for Ubuntu
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 " flake8
 autocmd BufWritePost *.py call Flake8()
+
+" flake8-cython
+autocmd BufWritePost *.pyx,*.pxd call Flake8()
 
 " tmux
 autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
@@ -243,3 +242,6 @@ endfunction
 " Set up maps for n and N that blink the match
 execute printf("nnoremap <silent> n n:call HLNext(%d, %d)<cr>", s:blink_length, has("timers") ? s:blink_freq : s:blink_length)
 execute printf("nnoremap <silent> N N:call HLNext(%d, %d)<cr>", s:blink_length, has("timers") ? s:blink_freq : s:blink_length)
+
+" yank to system clipboard in Ubuntu
+set clipboard=unnamedplus
