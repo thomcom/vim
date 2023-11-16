@@ -1,18 +1,76 @@
-" https://github.org/junegunn/vim-plug
+" Use Vim settings, rather then Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set nocompatible
 
+" https://github.org/junegunn/vim-plug
 call plug#begin()
 
-Plug 'tmhedberg/SimpylFold'
-Plug 'Konfekt/FastFold'
-Plug 'nvie/vim-flake8'
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'ycm-core/YouCompleteMe', { 'do' : './install.py --clangd-completer' }
-Plug 'Integralist/vim-mypy'
-"Plug 'Rip-Rip/clang_complete'
-"Plug 'vim-syntastic/syntastic'
+" Typescript
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'leafgarland/typescript-vim'
+
+" Universal linting
+"Plug 'dense-analysis/ale'
+
+" Folding - Temporarily disabling
+"Plug 'tmhedberg/SimpylFold'
+"Plug 'Konfekt/FastFold'
+
+" Python - Temporarily disabling in favor of ALE/Coc
+"Plug 'nvie/vim-flake8'
+"Plug 'Integralist/vim-mypy'
+
+" FZF
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+Plug 'github/copilot.vim'
 
 call plug#end()
+
+" ALE
+highlight ALEError ctermbg=Red ctermfg=White guibg=#991199 guifg=#FFFFFF
+let g:ale_enable = 1
+let b:ale_fixers = {
+\ '*': ['remove_trailing_lines', 'trim_whitespace'],
+\ 'python': ['black', 'autoflake', 'isort'],
+\ 'javascript': ['xo', 'eslint'],
+\ 'typescript': ['xo', 'eslint'],
+\ 'typescript.tsx': ['xo'],
+\ 'typescriptreact': ['xo']
+\}
+let g:ale_linters = {
+\ 'python': ['flake8', 'mypy', 'black'],
+\ 'javascript': ['xo', 'tsserver'],
+\ 'typescript': ['xo', 'tsserver'],
+\ 'typescript.tsx': ['xo', 'tsserver'],
+\ 'typescriptreact': ['xo', 'tsserver']
+\}
+let g:ale_fix_on_save = 1
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_filetype_changed = 0
+let g:ale_lint_on_cursor_moved = 0
+let g:ale_lint_on_insert = 0
+let g:ale_python_black_options = '-l 78'
+nnoremap <C-k> :ALEDetail<CR> " ALE Detail
+nnoremap <C-]> :ALEGoToDefinition<CR> " ALE Jump
+
+" COC
+let g:coc_global_extensions = ['coc-tsserver', 'coc-prettier', 'coc-eslint']
+let g:coc_user_config = {
+\   'format.enable': v:true,
+\   'tsserver.enable': v:true,
+\}
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
 
 " folding?
 set foldmethod=expr
@@ -22,36 +80,24 @@ vnoremap <space> zf
 " Clipboard for Ubuntu
 set clipboard=unnamedplus
 
+" black
+" autocmd bufwritepost *.py execute ':!black -l 79 %'
+
 " flake8
-autocmd BufWritePost *.py call Flake8()
+" autocmd bufwritepost *.py call flake8()
 
 " flake8-cython
-autocmd BufWritePost *.pyx,*.pxd call Flake8()
+" autocmd bufwritepost *.pyx,*.pxd call flake8()
 
 " tmux
-autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
-
-" When started as "evim", evim.vim will already have done these settings.
-if v:progname =~? "evim"
-  finish
-endif
+"autocmd bufreadpost,filereadpost,bufnewfile * call system("tmux rename-window " . expand("%"))
 
 " remap Esc
 :imap jk <Esc>
 :imap kj <Esc>
 
-" turn on relativenumber
-" set relativenumber
-
-" use :find to open any file
-set path+=**
-
 " Display all matching files when we tab complete
 set wildmenu
-
-" Use Vim settings, rather then Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
-set nocompatible
 
 " allow backspacing over everything in insert mode
 set backspace=eol,start,indent
@@ -61,7 +107,7 @@ if has("vms")
 else
   set backup		" keep a backup file
 endif
-set history=50		" keep 50 lines of command line history
+set history=1000		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
@@ -71,26 +117,21 @@ set expandtab		" use soft tabs
 set tabstop=2
 set sw=2
 set background=dark
-" set smartindent " not using this anymore?
-filetype indent on
-let &titlestring = @%
+
+" Enable setting the window title
 set title
+
+" Update the window title every time you enter a buffer
+autocmd BufEnter * let &titlestring = expand('%:t') . ' - ' . expand('%:p:h')
 
 " inserting newlines into files, stop it
 set fileformats+=dos
-
-" ctags optimization
-" autocmd BufRead,BufEnter * silent! lcd %:p:h:gs/ /\\ /
-set tags=tags;
 
 " large file disable syntax highlighting
 autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
 
 " json format!
 " key-\ $!python -m json.tool
-
-" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
-" let &guioptions = substitute(&guioptions, "t", "", "g")
 
 " Don't use Ex mode, use Q for formatting
 map Q gq
@@ -110,7 +151,7 @@ endif
 set backupdir=~/.vim/backups,.
 
 " glsl syntax highlighting
-au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl,*.cuh,*.cu setf glsl 
+au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl,*.cuh,*.cu setf glsl
 autocmd FileType c,cpp,cu,cuh source ~/.vim/syntax/opengl.vim
 
 " cython syntax highlighting
@@ -245,3 +286,33 @@ execute printf("nnoremap <silent> N N:call HLNext(%d, %d)<cr>", s:blink_length, 
 
 " yank to system clipboard in Ubuntu
 set clipboard=unnamedplus
+
+" F5 Refresh
+nnoremap <F5> :source $MYVIMRC<CR>
+
+" FZF File Explore
+nnoremap <C-p> :Files<CR>
+
+" Make it always exactly 79 chars wide.
+set textwidth=79
+set columns=79
+
+" Infinite undo
+set undodir=~/.vim/undo_dirs
+set undofile
+
+" Please never insert <CR> I hate that
+set wrap
+set linebreak
+set textwidth=0
+set formatoptions-=t
+
+" Set up Vim options for better editing experience
+set expandtab         " Use spaces instead of tabs
+set shiftwidth=2      " Number of spaces to use for each step of (auto)indent
+set tabstop=2         " Number of spaces that a <Tab> in the file counts for
+
+" Other settings for TypeScript
+autocmd FileType typescript setlocal sw=2 sts=2 et
+
+set nowrap
